@@ -38,6 +38,9 @@ var PLAY = 1;
 var END = 0;
 var SERVE = 2;
 var gameState = 2;
+var S;
+var Sc;
+var P;
 
 var play = 3;
 var comp = 3;
@@ -122,10 +125,19 @@ function setup() {
   score = createSprite(width/2,80);
   score.addImage(scoreI);
   score.scale="0.3";
+  
+  S = createSprite(width/1.65,height/1.2,50,50);
 
-  next = createSprite(width-100,height-100);
-  next.addImage(nextI);
-  next.scale="0.2"
+  Sc = createSprite(width/1.5,height/1.2,50,50);
+
+  P = createSprite(width/1.35,height/1.2,50,50);
+
+  // next = createSprite(width-100,height-100);
+  // next.addImage(nextI);
+  // next.scale="0.2"
+  // next.debug=true;
+  // next.setCollider("circle",0,0,200)
+
  
   signs = createSprite(width/2,height/2);
   signs.visible=false;
@@ -139,45 +151,44 @@ function draw() {
   background(220);
   
   if(gameState===2){
-    next.visible=false;
+    // next.visible=false;
     score.visible=false;
   }
   
   if(gameState===2 && keyDown("space")||mousePressedOver(start)){
     start.visible=false;
     getReady.visible=false;
-    game.visible=false;
+    // game.visible=false;
     gameState=1;
   } 
   
   if(gameState===1){
    score.visible=true;
-   next.visible=true;
+  //  next.visible=true;
+   game.x = width/1.5
+   game.y = height/1.2;
 
-   if(keyDown("right")){
-   Hand();
-   Hand2();
+   if(mousePressedOver(S)){
+     var s = createSprite(width/1.5,height/2)
+     s.addImage(stone1I)
+     Hand();
   }
+  if(mousePressedOver(Sc)){
+    var sc = createSprite(width/1.5,height/2)
+     sc.addImage(scissor1I)
+    Hand();
+   }
+   if(mousePressedOver(P)){
+    var p = createSprite(width/1.5,height/2)
+    p.addImage(papper1I)
+    Hand();
+   }
 }
   
   drawSprites();
 }
+
 function Hand(){
-  var hand = createSprite(width/1.5,height/2);
-
-  var rand = Math.round(random(1,3));
-
-  if(rand==1){
-    hand.addImage(scissor1I);
-  }
-  else if(rand==2){
-    hand.addImage(papper1I);
-  }
-  else{
-    hand.addImage(stone1I);
-  }
- }
-function Hand2(){
   var hand2 = createSprite(width/3,height/2);
 
   var rand = Math.round(random(1,3));
