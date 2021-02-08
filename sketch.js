@@ -130,15 +130,8 @@ function setup() {
 
   Sc = createSprite(width/1.5,height/1.2,50,50);
 
-  P = createSprite(width/1.35,height/1.2,50,50);
+  P = createSprite(width/1.37,height/1.2,50,50);
 
-  // next = createSprite(width-100,height-100);
-  // next.addImage(nextI);
-  // next.scale="0.2"
-  // next.debug=true;
-  // next.setCollider("circle",0,0,200)
-
- 
   signs = createSprite(width/2,height/2);
   signs.visible=false;
   signs.addImage(sign1)
@@ -150,21 +143,20 @@ function setup() {
 function draw() {
   background(220);
   
+  drawSprites();
+
   if(gameState===2){
-    // next.visible=false;
     score.visible=false;
   }
   
   if(gameState===2 && keyDown("space")||mousePressedOver(start)){
     start.visible=false;
     getReady.visible=false;
-    // game.visible=false;
     gameState=1;
   } 
   
   if(gameState===1){
    score.visible=true;
-  //  next.visible=true;
    game.x = width/1.5
    game.y = height/1.2;
 
@@ -172,20 +164,31 @@ function draw() {
      var s = createSprite(width/1.5,height/2)
      s.addImage(stone1I)
      Hand();
+     gameState=END;
   }
   if(mousePressedOver(Sc)){
     var sc = createSprite(width/1.5,height/2)
      sc.addImage(scissor1I)
     Hand();
+    gameState=END;
    }
    if(mousePressedOver(P)){
     var p = createSprite(width/1.5,height/2)
     p.addImage(papper1I)
     Hand();
+    gameState=END;
+    
    }
 }
-  
-  drawSprites();
+if(gameState===END){
+  textSize(20);
+  text("Press Space for 2nd turn",width/2.5,height/3);
+}
+  if(keyDown("space")&&gameState===END){
+   gameState = PLAY;
+  }
+
+
 }
 
 function Hand(){
