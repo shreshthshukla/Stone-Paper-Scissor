@@ -35,6 +35,9 @@ var Cscore;
 var Pscore;
 
 var PLAY = 1;
+var POINT1 = 3
+var POINT2= 4
+var OVER =5
 var END = 0;
 var SERVE = 2;
 var gameState = 2;
@@ -127,14 +130,16 @@ function setup() {
   score.scale="0.3";
   
   S = createSprite(width/1.65,height/1.2,50,50);
-
+  S.visible=false;
   Sc = createSprite(width/1.5,height/1.2,50,50);
-
+  Sc.visible=false;
   P = createSprite(width/1.37,height/1.2,50,50);
+  P.visible=false;
 
   signs = createSprite(width/2,height/2);
   signs.visible=false;
-  signs.addImage(sign1)
+  signs.scale = "0.4";
+  // signs.addImage(sign1)
 
   Cscore = 0;
   Pscore = 0;
@@ -144,6 +149,8 @@ function draw() {
   background(220);
   
   drawSprites();
+  textSize(50);
+
 
   if(gameState===2){
     score.visible=false;
@@ -156,33 +163,158 @@ function draw() {
   } 
   
   if(gameState===1){
+    text(" "+Pscore,width/1.5,90);
    score.visible=true;
    game.x = width/1.5
    game.y = height/1.2;
 
+
+   //stone
    if(mousePressedOver(S)){
      var s = createSprite(width/1.5,height/2)
+     var ss=1
      s.addImage(stone1I)
-     Hand();
-     gameState=END;
-  }
+    //  Hand();
+    var hand2 = createSprite(width/3,height/2);
+
+    var rand = Math.round(random(1,3));
+  
+    if(rand==1){
+      hand2.addImage(scissor2I);
+      signs.visible=true;
+      signs.addImage(sign3)
+      var p1 = 1;
+    }
+    else if(rand==2){
+      hand2.addImage(papper2I);
+      signs.visible=true;
+      signs.addImage(sign2)
+      var p1 = 2;
+    }
+    else{
+      hand2.addImage(stone2I);
+      signs.visible=true;
+      signs.addImage(sign1)
+      var p1 = 3;
+    }
+    if(ss===1&&(p1===1||p1==2)){
+      gameState=POINT1;
+     }
+     if(ss===1&&p1==3){
+       gameState = END;
+     }  
+   }
+
+
+  //scissor
   if(mousePressedOver(Sc)){
     var sc = createSprite(width/1.5,height/2)
+    var ss2 = 1;
      sc.addImage(scissor1I)
-    Hand();
-    gameState=END;
-   }
+    // Hand();
+    var hand2 = createSprite(width/3,height/2);
+
+    var rand = Math.round(random(1,3));
+  
+    if(rand==1){
+      hand2.addImage(scissor2I);
+      signs.visible=true;
+      signs.addImage(sign1)
+      var p2 = 1;
+    }
+    else if(rand==2){
+      hand2.addImage(papper2I);
+      signs.visible=true;
+      signs.addImage(sign3)
+      var p2 = 2;
+    }
+    else{
+      hand2.addImage(stone2I);
+      signs.visible=true;
+      signs.addImage(sign2)
+      var p2 = 3;
+    }
+    if(ss2===1&&(p2===3||p2==2)){
+      gameState=POINT1;
+     }
+     if(ss2===1&&p2==1){
+       gameState = END;
+     }   
+    }
+
+
+   //paper
    if(mousePressedOver(P)){
     var p = createSprite(width/1.5,height/2)
+    var ss3 = 1
     p.addImage(papper1I)
-    Hand();
-    gameState=END;
+    // Hand();
+    var hand2 = createSprite(width/3,height/2);
+
+    var rand = Math.round(random(1,3));
+  
+    if(rand==1){
+      hand2.addImage(scissor2I);
+      signs.visible=true;
+      signs.addImage(sign2)
+      var p3 = 1;
+    }
+    else if(rand==2){
+      hand2.addImage(papper2I);
+      signs.visible=true;
+      signs.addImage(sign1)
+      var p3 = 2;
+    }
+    else{
+      hand2.addImage(stone2I);
+      signs.visible=true;
+      signs.addImage(sign3)
+      var p3 = 3;
+    }
+    if(ss3===1&&(p3===3||p3==2)){
+      gameState=POINT1;
+     }
+     if(ss3===1&&p3==2){
+       gameState = END;
+     }
     
    }
 }
+if(gameState === POINT1){
+  Pscore++;
+  gameState= END
+  }
+
+  if(Pscore === 10){
+    gameState= OVER;
+    gameOver.visible = true;
+    score.visible=false
+    textSize(55)
+    text("You win", width/2.4,height/2)
+    text("Press r to restart", width/3,height/2-100)
+  }
+
+  if(gameState === POINT2){
+    Cscore++;
+    gameState= END
+  }
+
+    if(Cscore === 10){
+      gameState= OVER;
+      gameOver.visible = true;
+      score.visible=false;
+      textSize(55)
+      text("You Lose", width/2.4,height/2)
+      text("Press r to restart", width/3,height/2-100)
+    }
+
+  if(keyDown("r")&&gameState ===OVER && (Pscore ===5||Csore ===5)){
+  reset ();
+  }
 if(gameState===END){
+  text(" "+Pscore,width/1.5,90);
   textSize(20);
-  text("Press Space for 2nd turn",width/2.5,height/3);
+  text("Press Space for another turn",width/2.5,height/3);
 }
   if(keyDown("space")&&gameState===END){
    gameState = PLAY;
@@ -190,20 +322,12 @@ if(gameState===END){
 
 
 }
+function reset(){
+  gameState = 2;
+  Pscore = 0;
+  Cscore = 0; 
+ gameOver.visible= false;
 
-function Hand(){
-  var hand2 = createSprite(width/3,height/2);
-
-  var rand = Math.round(random(1,3));
-
-  if(rand==1){
-    hand2.addImage(scissor2I);
-  }
-  else if(rand==2){
-    hand2.addImage(papper2I);
-  }
-  else{
-    hand2.addImage(stone2I);
-  }
+ start.visible=true;
+ getReady.visible=true;
 }
-
