@@ -38,7 +38,7 @@ var PLAY = 1;
 var POINT1 = 3
 var POINT2= 4
 var OVER1 =5
-var OVER2=6
+var OVER2 =6
 var END = 0;
 var SERVE = 2;
 var gameState = 2;
@@ -50,8 +50,7 @@ var play = 3;
 var comp = 3;
 var s,hand2,sc,hand3,p,hand4;
 var scoreIm,scoreIM;
-var looseSound,beep,beepSound
-
+var win,winSound,loose,looseSound,beep,beepSound
 function preload(){
 
   bkI  = loadAnimation("blue.jpg","blue.jpg","green.jpg","green.jpg","pink.jpg","pink.jpg","teal.jpg","teal.jpg","yellow.jpg","yellow.jpg");
@@ -92,8 +91,8 @@ function preload(){
 
   papper2I = loadImage("Paper1.1.png");
   scoreIM =loadImage("score+.png")
-  winSound=loadSound("youwin (mp3cut.net).mp3")
-  looseSound = loadSound("youwin (mp3cut.net).mp3");
+  winSound=loadSound("youwin.mp3")
+  looseSound = loadSound("youloose.mp3");
   beepSound=loadSound("beep.mp3")
 }
 
@@ -120,7 +119,7 @@ function setup() {
   start = createSprite(width/2,height-100);
   start.addImage(startI);
   start.scale="0.2";
-  //start.debug=true;
+  start.debug=true;
   start.setCollider("circle",0,0,200)
 
   restart = createSprite(width/2,height/2);
@@ -195,7 +194,8 @@ if(gameState===1){
    game.y = height/1.2;
 
  if(mousePressedOver(S)){
-  
+      
+    beepSound.play()
     s.visible=true
      
      s.addImage(stone1I)
@@ -207,19 +207,16 @@ if(gameState===1){
     var rand = Math.round(random(1,3));
     switch(rand){
     case 1:  hand2.addImage(scissor2I);
-    winSound.play()
     signs.visible=true;
     signs.addImage(sign3)
              var p2 =1
     break;
     case 2:  hand2.addImage(papper2I);
-    beepSound.play()
     signs.visible=true;
     signs.addImage(sign2)
              var p2 =2
     break;
     case 3:  hand2.addImage(stone2I);
-    beepSound.play()
     signs.visible=true;
     signs.addImage(sign1)
               var p2 =3
@@ -239,6 +236,7 @@ if(gameState===1){
     }
   }
   if(mousePressedOver(Sc)){
+    beepSound.play()
     
     sc.visible =true
     
@@ -249,19 +247,16 @@ if(gameState===1){
    var rand1 = Math.round(random(1,3));
    switch(rand1){
    case 1:  hand3.addImage(scissor2I);
-   beepSound.play()
    signs.visible=true;
    signs.addImage(sign1)
             var p4 =1
    break;
    case 2:  hand3.addImage(papper2I);
-   winSound.play()
    signs.visible=true;
    signs.addImage(sign3)
             var p4 =2
    break;
    case 3:  hand3.addImage(stone2I);
-   beepSound.play()
    signs.visible=true;
    signs.addImage(sign2)
              var p4 =3
@@ -282,7 +277,7 @@ if(gameState===1){
    }
    if(mousePressedOver(P)){
     
-    // beepSound.play()
+    beepSound.play()
 
     p.addImage(papper1I)
     p.visible =true
@@ -292,19 +287,16 @@ if(gameState===1){
    var rand2 = Math.round(random(1,3));
    switch(rand2){
    case 1:  hand4.addImage(scissor2I);
-   beepSound.play()
    signs.visible=true;
    signs.addImage(sign2)
             var p6 =1
    break;
    case 2:  hand4.addImage(papper2I);
-   beepSound.play()
    signs.visible=true;
    signs.addImage(sign1)
             var p6 =2
    break;
    case 3:  hand4.addImage(stone2I);
-   winSound.play()
    signs.visible=true;
    signs.addImage(sign3)
              var p6 =3
@@ -356,13 +348,10 @@ scoreIm.lifetime = 50;
   gameState=END;
 }
 if(Pscore ===5){
- 
+  winSound.play()
   gameState= OVER1;
-  
 }
-if(gameState=== OVER1){
-
-
+if(gameState= OVER1){
   gameOver.visible = true;
   score.visible=false
   text("You win", width/2,height/2)
@@ -378,18 +367,14 @@ if(gameState=== OVER1){
 
   signs.visible=false;
 
-  // winSound.play()
-
 }
 
 if(Cscore ===5){
+  looseSound.play()
 
   gameState= OVER2;
 }
-if(gameState=== OVER2){
-
-  // looseSound.play()
-
+if(gameState= OVER2){
   gameOver.visible = true;
   score.visible=false
   text("You loose", width/2,height/2)
@@ -438,7 +423,7 @@ function reset(){
   Pscore = 0;
  Cscore = 0;
  gameOver.visible= false;
-bk.visible =false
+
  start.visible=true;
  getReady.visible=true;
  s.visible=false
