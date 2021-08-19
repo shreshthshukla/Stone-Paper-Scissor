@@ -34,6 +34,7 @@ var scoreI;
 var Cscore;
 var Pscore;
 
+var LOAD = -1 
 var PLAY = 1;
 var POINT1 = 3
 var POINT2= 4
@@ -41,7 +42,7 @@ var OVER1 =5
 var OVER2=6
 var END = 0;
 var SERVE = 2;
-var gameState = 2;
+var gameState = -1;
 var S;
 var Sc;
 var P;
@@ -51,6 +52,8 @@ var comp = 3;
 var s,hand2,sc,hand3,p,hand4;
 var scoreIm,scoreIM;
 var looseSound,beep,beepSound
+
+var TT = 150;
 
 function preload(){
 
@@ -90,6 +93,9 @@ function preload(){
 
   scissor2I = loadImage("Scissor1.1.png");
 
+  loadI = loadAnimation("Load1.png","Load2.png","Load3.png","Load4.png","Load5.png","Load6.png","Load7.png","Load8.png","Load9.png","Load10.png",
+  "Load11.png","Load12.png")
+
   papper2I = loadImage("Paper1.1.png");
   scoreIM =loadImage("score+.png")
   winSound=loadSound("youwin (mp3cut.net).mp3")
@@ -104,15 +110,19 @@ function setup() {
   bk.addAnimation("back",bkI);
   bk.scale=3.5;
   bk.visible=false
+
   getReady = createSprite(width/2,80,20,20);
   getReady.addImage(getReadyI);
   getReady.scale=0.7;
   
-  player=createSprite(0+100,height/2,15,100);
-  player.addImage(playerI);
+  load = createSprite(width/2,height/2);
+  load.addAnimation("changing",loadI)
+  load.visible=false
+  computer=createSprite(0+100,height/2,15,100);
+  computer.addImage(playerI);
 
-  computer=createSprite(width-100,height/2,15,100);
-  computer.addImage(computerI);
+  player=createSprite(width-100,height/2,15,100);
+  player.addImage(computerI);
 
   game = createSprite(width/2,height/2,20,20);
   game.addImage(gameI);
@@ -148,7 +158,7 @@ function setup() {
   signs = createSprite(width/2,height/2);
   signs.visible=false;
   signs.addImage(sign1)
-signs.scale = 0.4
+  signs.scale = 0.4
   Cscore = 0;
   Pscore = 0;
 
@@ -162,7 +172,7 @@ signs.scale = 0.4
   sc.visible =false
 
   hand3 = createSprite(width/3,height/2);
-hand3.visible =false
+  hand3.visible =false
 
 p = createSprite(width/1.5,height/2)
 p.visible =false;
@@ -176,15 +186,49 @@ hand4.visible =false
 function draw() {
   background(255);
   // console.log(gameState)
+  drawSprites();
+
+  if (gameState==-1){
+    textFont("Algerian")
+strokeWeight(20);
+textSize(25);
+fill ("black")
+    text("LOADING...",20,50);
+    TT--
+    player.visible = false;
+    getReady.visible=false;
+    computer.visible=false;
+    game.visible=false;
+    start.visible=false;
+    load.visible=true
+
+   
+    if(TT === 0){
+      gameState=2;
+
+    }
+  }
 
   if(gameState===2){
     score.visible=false;
+    player.visible = true;
+    getReady.visible=true;
+  computer.visible=true;
+  game.visible=true;
+  start.visible=true;
+  load.visible=false
   }
   
   if(gameState===2 && keyDown("space")||mousePressedOver(start)){
     start.visible=false;
     getReady.visible=false;
     gameState=1;
+    textFont("Algerian")
+strokeWeight(20);
+textSize(25);
+fill ("black")
+text ("Player Score: "+ Pscore,width-250,height/4)
+text ("computer Score: "+ Cscore,100,height/4)
   } 
   
 if(gameState===1){
@@ -193,6 +237,12 @@ if(gameState===1){
    score.visible=true;
    game.x = width/1.5
    game.y = height/1.2;
+   textFont("Algerian")
+strokeWeight(20);
+textSize(25);
+fill ("black")
+text ("Player Score: "+ Pscore,width-250,height/4)
+text ("computer Score: "+ Cscore,100,height/4)
 
  if(mousePressedOver(S)){
   
@@ -325,13 +375,7 @@ if(gameState===1){
     
   }
 }
-drawSprites();
-textFont("Algerian")
-strokeWeight(20);
-textSize(25);
-fill ("black")
-text ("Player Score: "+ Pscore,width-250,height/4)
-text ("computer Score: "+ Cscore,100,height/4)
+
 
 // console.log(Pscore)
 if(gameState === POINT1){
