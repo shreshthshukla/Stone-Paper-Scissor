@@ -409,8 +409,12 @@ if(gameState=== OVER1){
 
   gameOver.visible = true;
   score.visible=false
-  text("You win", width/2,height/2)
-  text("Press r to restart", width/2,height/2-100)
+  textFont("Algerian")
+strokeWeight(20);
+textSize(25);
+fill ("black")
+  text("You win", width/2-100,height/2)
+  text("Press r to restart", width/2-200,height/2-100)
   s.visible=false
   hand2.visible=false
   
@@ -436,8 +440,12 @@ if(gameState=== OVER2){
 
   gameOver.visible = true;
   score.visible=false
-  text("You loose", width/2,height/2)
-  text("Press r to restart", width/2,height/2-100)
+  textFont("Algerian")
+strokeWeight(20);
+textSize(25);
+fill ("black")
+  text("You loose", width/2.6,height/2)
+  text("Press r to restart", width/3,height/2-100)
  
   s.visible=false
   hand2.visible=false
@@ -454,8 +462,11 @@ if(keyDown("r")&&(gameState ===OVER1||gameState===OVER2) && (Pscore ===5||Cscore
 reset ()
 }
 if(gameState===END){
-  textSize(20);
-  text("Press Space for next chance",width/2.5,height/3);
+  textFont("Algerian")
+strokeWeight(20);
+textSize(25);
+fill ("black")
+  text("Press Space for next chance",width/2.6,height/3);
   
 }
   if(keyDown("space")&&gameState===END){
