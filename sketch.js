@@ -52,8 +52,9 @@ var comp = 3;
 var s,hand2,sc,hand3,p,hand4;
 var scoreIm,scoreIM;
 var looseSound,beep,beepSound
-
+var youloose;
 var TT = 150;
+var won;
 
 function preload(){
 
@@ -69,9 +70,9 @@ function preload(){
   
   gameI = loadImage("rock-paper-scissors.jpg");
   
-  playerI = loadImage("Among us 1.png");
+  playerI = loadImage("AmongUs1.png");
 
-  computerI = loadImage("Among_us_2.png");
+  computerI = loadImage("AmongUs2.png");
 
   scoreI = loadImage("score.png");
 
@@ -96,11 +97,18 @@ function preload(){
   loadI = loadAnimation("Load1.png","Load2.png","Load3.png","Load4.png","Load5.png","Load6.png","Load7.png","Load8.png","Load9.png","Load10.png",
   "Load11.png","Load12.png")
 
+  forwardI = loadImage("forward.png");
+
   papper2I = loadImage("Paper1.1.png");
   scoreIM =loadImage("score+.png")
+
   winSound=loadSound("youwin (mp3cut.net).mp3")
-  looseSound = loadSound("youwin (mp3cut.net).mp3");
+
   beepSound=loadSound("beep.mp3")
+
+  youloose = loadSound("youloose.mp3");
+
+  won = loadSound("Won.mp3")
 }
 
 function setup() {
@@ -108,79 +116,105 @@ function setup() {
   
   bk=createSprite(width/2,height/2,width,height);
   bk.addAnimation("back",bkI);
-  bk.scale=3.5;
+  bk.scale=width;
   bk.visible=false
 
   getReady = createSprite(width/2,80,20,20);
   getReady.addImage(getReadyI);
-  getReady.scale=0.7;
+  getReady.scale=width/1500;
   
   load = createSprite(width/2,height/2);
   load.addAnimation("changing",loadI)
+  load.scale=width/2000;
   load.visible=false
+
   computer=createSprite(0+100,height/2,15,100);
   computer.addImage(playerI);
+  computer.scale=width/9800;
 
   player=createSprite(width-100,height/2,15,100);
   player.addImage(computerI);
+  player.scale=width/1300;
 
   game = createSprite(width/2,height/2,20,20);
   game.addImage(gameI);
+  game.scale=width/1100;
 
-  start = createSprite(width/2,height-100);
+  start = createSprite(width/2,height/1.2);
   start.addImage(startI);
-  start.scale="0.2";
+  start.scale=width/8000;
   //start.debug=true;
   start.setCollider("circle",0,0,200)
 
-  restart = createSprite(width/2,height/2);
+  restart = createSprite(width/2,height/1.4);
   restart.addImage(restartI);
-  restart.scale="0.5";
+  restart.scale=width/3000;
   restart.visible=false;
 
   gameOver = createSprite(width/2,80);
   gameOver.addImage(gameOverI);
-  gameOver.scale=0.7;
- gameOver.visible = false
+  gameOver.scale=width/1500;
+  gameOver.visible = false
+
+  forward = createSprite(width/7.5,height/1.2)
+  forward.addImage(forwardI);
+  forward.scale = width/5500;
+  forward.visible=false;
 
   score = createSprite(width/2,80);
   score.addImage(scoreI);
-  score.scale="0.3";
+  score.scale=width/3500;
   score.visible = false
-  S = createSprite(width/1.65,height/1.2,50,50);
-   S.visible = false;
-  Sc = createSprite(width/1.5,height/1.2,50,50);
-  Sc.visible = false;
 
-  P= createSprite(width/1.37,height/1.2,50,50);
+  S = createSprite(width/1.68,height/1.2,50,50);
+   S.visible = false;
+   S.scale=width/1400
+  Sc = createSprite(width/1.51,height/1.2,50,50);
+  Sc.visible = false;
+  Sc.scale=width/1400
+
+  P= createSprite(width/1.36,height/1.2,50,50);
   P.visible = false;
+  P.scale=width/1400
 
   signs = createSprite(width/2,height/2);
   signs.visible=false;
   signs.addImage(sign1)
-  signs.scale = 0.4
+  signs.scale = width/5000
   Cscore = 0;
   Pscore = 0;
 
   s = createSprite(width/1.5,height/2)
   s.visible=false
+  s.scale=width/1500
 
   hand2 = createSprite(width/3,height/2);
   hand2.visible =false
+  hand2.scale=width/1500
 
   sc = createSprite(width/1.5,height/2)
   sc.visible =false
+  sc.scale=width/1500
 
   hand3 = createSprite(width/3,height/2);
   hand3.visible =false
+  hand3.scale=width/1500
 
 p = createSprite(width/1.5,height/2)
 p.visible =false;
+p.scale=width/1500
 
 hand4 = createSprite(width/3,height/2);
 hand4.visible =false
+hand4.scale=width/1500
 
 
+}
+
+function sound(){
+   if(Pscore===5){
+     won.play();
+   }
 }
 
 function draw() {
@@ -191,7 +225,7 @@ function draw() {
   if (gameState==-1){
     textFont("Algerian")
 strokeWeight(20);
-textSize(25);
+textSize(width/30);
 fill ("black")
     text("LOADING...",20,50);
     TT--
@@ -223,12 +257,7 @@ fill ("black")
     start.visible=false;
     getReady.visible=false;
     gameState=1;
-    textFont("Algerian")
-strokeWeight(20);
-textSize(25);
-fill ("black")
-text ("Player Score: "+ Pscore,width-250,height/4)
-text ("computer Score: "+ Cscore,100,height/4)
+
   } 
   
 if(gameState===1){
@@ -239,12 +268,12 @@ if(gameState===1){
    game.y = height/1.2;
    textFont("Algerian")
 strokeWeight(20);
-textSize(25);
+textSize(width/30);
 fill ("black")
-text ("Player Score: "+ Pscore,width-250,height/4)
-text ("computer Score: "+ Cscore,100,height/4)
+text ("Player Score: "+ Pscore,width/1.6,height/4)
+text ("computer Score: "+ Cscore,width/12,height/4)
 
- if(mousePressedOver(S)){
+ if(mousePressedOver(S)||touches.length>0){
   
     s.visible=true
      
@@ -263,7 +292,7 @@ text ("computer Score: "+ Cscore,100,height/4)
              var p2 =1
     break;
     case 2:  hand2.addImage(papper2I);
-    beepSound.play()
+    youloose.play()
     signs.visible=true;
     signs.addImage(sign2)
              var p2 =2
@@ -287,6 +316,8 @@ text ("computer Score: "+ Cscore,100,height/4)
     if(p1===1&&p2==3){
       gameState = END;
     }
+
+    touches=[];
   }
   if(mousePressedOver(Sc)){
     
@@ -311,7 +342,7 @@ text ("computer Score: "+ Cscore,100,height/4)
             var p4 =2
    break;
    case 3:  hand3.addImage(stone2I);
-   beepSound.play()
+   youloose.play()
    signs.visible=true;
    signs.addImage(sign2)
              var p4 =3
@@ -342,7 +373,7 @@ text ("computer Score: "+ Cscore,100,height/4)
    var rand2 = Math.round(random(1,3));
    switch(rand2){
    case 1:  hand4.addImage(scissor2I);
-   beepSound.play()
+   youloose.play()
    signs.visible=true;
    signs.addImage(sign2)
             var p6 =1
@@ -380,9 +411,9 @@ text ("computer Score: "+ Cscore,100,height/4)
 // console.log(Pscore)
 if(gameState === POINT1){
 Pscore++;
-scoreIm =createSprite(width-250,height/2)
+scoreIm =createSprite(width/1.5,height/2)
 scoreIm.addImage(scoreIM)
-scoreIm.scale=0.1
+scoreIm.scale=width/7000
 scoreIm.visible =true;
 scoreIm.velocityY = -5;
 scoreIm.lifetime = 50;
@@ -391,30 +422,31 @@ gameState= END
 
 if(gameState === POINT2){
   Cscore++;
-scoreIm =createSprite(250,height/2)
+scoreIm =createSprite(width/4,height/2)
 scoreIm.addImage(scoreIM)
-scoreIm.scale=0.1
+scoreIm.scale=width/7000
 scoreIm.visible =true;
 scoreIm.velocityY = -5;
 scoreIm.lifetime = 50;
   gameState=END;
 }
 if(Pscore ===5){
- 
+
+  sound();
   gameState= OVER1;
+
   
 }
 if(gameState=== OVER1){
-
-
+  Pscore = 0
   gameOver.visible = true;
   score.visible=false
   textFont("Algerian")
-strokeWeight(20);
-textSize(25);
-fill ("black")
-  text("You win", width/2-100,height/2)
-  text("Press r to restart", width/2-200,height/2-100)
+  strokeWeight(20);
+  textSize(width/30);
+  fill ("black")
+  text("You win", width/2.4,height/2)
+  text("Press r to restart", width/3,height/2-100)
   s.visible=false
   hand2.visible=false
   
@@ -423,10 +455,12 @@ fill ("black")
 
   p.visible=false
   hand4.visible=false
+  game.visible=false;
 
   signs.visible=false;
+  restart.visible = true;
 
-  // winSound.play()
+  
 
 }
 
@@ -442,9 +476,9 @@ if(gameState=== OVER2){
   score.visible=false
   textFont("Algerian")
 strokeWeight(20);
-textSize(25);
+textSize(width/30);
 fill ("black")
-  text("You loose", width/2.6,height/2)
+  text("You loose", width/2.4,height/2)
   text("Press r to restart", width/3,height/2-100)
  
   s.visible=false
@@ -455,21 +489,24 @@ fill ("black")
   
   p.visible=false
   hand4.visible=false
+  restart.visible = true;
 
+  game.visible=false;
   signs.visible=false;
 }
-if(keyDown("r")&&(gameState ===OVER1||gameState===OVER2) && (Pscore ===5||Cscore ===5)){
+if(keyDown("r")||mousePressedOver(restart)&&(gameState ===OVER1||gameState===OVER2) && (Pscore ===0||Cscore ===5)){
 reset ()
 }
 if(gameState===END){
+  forward.visible=true;
   textFont("Algerian")
 strokeWeight(20);
-textSize(25);
+textSize(width/30);
 fill ("black")
-  text("Press Space for next chance",width/2.6,height/3);
+  text("Press Space for next chance",width/4,height/3);
   
 }
-  if(keyDown("space")&&gameState===END){
+  if(keyDown("space")||mousePressedOver(forward)&&gameState===END){
    gameState = PLAY;
   
    s.visible=false
@@ -490,7 +527,7 @@ fill ("black")
 }
 function reset(){
   gameState = 2;
-  Pscore = 0;
+  //Pscore = 0;
  Cscore = 0;
  gameOver.visible= false;
 bk.visible =false
@@ -506,6 +543,13 @@ bk.visible =false
  hand4.visible=false
 
  signs.visible=false;
+
+ restart.visible = false;
+
+ game.x=width/2;
+ game.y=height/2;
+
+ forward.visible=false;
 }
 
 
